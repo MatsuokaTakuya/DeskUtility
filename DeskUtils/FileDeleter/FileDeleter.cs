@@ -30,13 +30,19 @@
                     Console.WriteLine(fileName);
                     continue;
                 }
-
+                bool isMatch = false;
                 foreach(var pattern in keepPatterns)
                 {
+                    // パターンにマッチするファイルは無視
                     if (fileName.Contains(pattern))
                     {
-                        continue;
+                        isMatch = true;
+                        break;
                     }
+                }
+                if (isMatch)
+                {
+                    continue;
                 }
                 Console.WriteLine(fileName);
             }
@@ -48,22 +54,44 @@
         /// </summary>
         /// <param name="targetPath">ターゲットパス</param>
         /// <param name="keepPatterns">削除対象にしないファイル名パターン</param>
-        public void ExecuteFileDelete(string targetPath, string[] keepPatterns)
+        public void ExecuteFileDelete(string targetPath, string[]? keepPatterns)
         {
             if (!IsPathExists(targetPath))
             {
                 Console.WriteLine("targetPath folder is not Exists");
                 return;
             }
-            var fileNames = Directory.EnumerateFiles(targetPath);
-            if (fileNames == null || fileNames.Count() == 0)
+            var fileNames = Directory.EnumerateFiles(targetPath).ToList();
+            if (fileNames == null || fileNames.Count == 0)
             {
                 return;
             }
             Console.WriteLine("========== DeleteFiles ==========");
             foreach (var fileName in fileNames)
             {
+                if (keepPatterns == null || keepPatterns.Length == 0)
+                {
+                    Console.WriteLine(fileName);
+                    File.Delete(fileName);
+                    continue;
+                }
+
+                bool isMatch = false;
+                foreach (var pattern in keepPatterns)
+                {
+                    // パターンにマッチするファイルは無視
+                    if (fileName.Contains(pattern))
+                    {
+                        isMatch = true;
+                        break;
+                    }
+                }
+                if (isMatch)
+                {
+                    continue;
+                }
                 Console.WriteLine(fileName);
+                File.Delete(fileName);
             }
             Console.WriteLine("========== End ==========");
         }

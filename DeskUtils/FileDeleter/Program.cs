@@ -1,5 +1,23 @@
-﻿
-Console.WriteLine("Please select a file path. (copy and paste is allowed");
+﻿Console.WriteLine("機能を選択してください。 1:削除ファイル確認　2:ファイル削除");
+
+string? functionInput;
+while (true)
+{
+    functionInput = Console.ReadLine();
+    if (functionInput  == null || functionInput.Length == 0)
+    {
+        Console.WriteLine("1か2の機能を選択してください。");
+        continue;
+    }
+
+    if (functionInput == "1" || functionInput == "2")
+    {
+        break;
+    }
+    Console.WriteLine("入力が間違ってます。1か2の機能を選択してください。");
+}
+
+Console.WriteLine("ファイルパスを入力してください。（コピぺ可");
 
 // 入力待ち
 var input = Console.ReadLine();
@@ -12,7 +30,7 @@ if (string.IsNullOrEmpty(input))
 // パスコピーで自動でつくダブルクォーテーションは排除
 var targetFile = input.Trim().Trim('"');
 
-Console.WriteLine("Please Keep Pattern ? , ");
+Console.WriteLine("無視するファイルパターンを入力してください。カンマ(,)区切りで複数");
 input = Console.ReadLine();
 
 string[]? keepPatterns = null;
@@ -22,4 +40,12 @@ if (!string.IsNullOrEmpty(input))
 }
 
 var fileDeleter = new FileDeleter.FileDeleter();
-fileDeleter.ReadDeleteFiles(targetFile, keepPatterns);
+if (functionInput == "1")
+{
+    fileDeleter.ReadDeleteFiles(targetFile, keepPatterns);
+}
+else
+{
+    fileDeleter.ExecuteFileDelete(targetFile, keepPatterns);
+}
+
