@@ -4,7 +4,7 @@ string? functionInput;
 while (true)
 {
     functionInput = Console.ReadLine();
-    if (functionInput  == null || functionInput.Length == 0)
+    if (string.IsNullOrEmpty(functionInput) || functionInput.Length == 0)
     {
         Console.WriteLine("1か2の機能を選択してください。");
         continue;

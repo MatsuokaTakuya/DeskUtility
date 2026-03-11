@@ -18,7 +18,7 @@
                 return;
             }
             var fileNames = Directory.EnumerateFiles(targetPath).ToList();
-            if (fileNames == null || fileNames.Count == 0)
+            if (fileNames.Count == 0)
             {
                 return;
             }
@@ -62,7 +62,7 @@
                 return;
             }
             var fileNames = Directory.EnumerateFiles(targetPath).ToList();
-            if (fileNames == null || fileNames.Count == 0)
+            if (fileNames.Count == 0)
             {
                 return;
             }
