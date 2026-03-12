@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileDeleter", "FileDeleter\FileDeleter.csproj", "{15C82759-9E76-4B45-A6FC-C921DD16C118}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileRenamer", "FileRenamer\FileRenamer.csproj", "{AF9EBDC3-69AE-44C3-9DFD-BEC4937B4703}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{15C82759-9E76-4B45-A6FC-C921DD16C118}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15C82759-9E76-4B45-A6FC-C921DD16C118}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15C82759-9E76-4B45-A6FC-C921DD16C118}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF9EBDC3-69AE-44C3-9DFD-BEC4937B4703}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF9EBDC3-69AE-44C3-9DFD-BEC4937B4703}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF9EBDC3-69AE-44C3-9DFD-BEC4937B4703}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF9EBDC3-69AE-44C3-9DFD-BEC4937B4703}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
