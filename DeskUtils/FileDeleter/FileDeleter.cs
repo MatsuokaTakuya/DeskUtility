@@ -1,10 +1,14 @@
-﻿namespace FileDeleter
+﻿using System.Collections.Concurrent;
+
+namespace FileDeleter
 {
     /// <summary>
     /// ファイルデリートクラス
     /// </summary>
     internal class FileDeleter
     {
+        private ConcurrentBag<string> deleteFileBag = new ConcurrentBag<string>();
+
         /// <summary>
         /// 削除対象のファイルを確認
         /// </summary>
@@ -17,33 +21,31 @@
                 Console.WriteLine("targetPath folder is not Exists");
                 return;
             }
-            var fileNames = Directory.EnumerateFiles(targetPath).ToList();
-            if (fileNames.Count == 0)
+            var fileNames = Directory.EnumerateFiles(targetPath);
+            var parallelOptions = new ParallelOptions();
+            parallelOptions.MaxDegreeOfParallelism = Environment.ProcessorCount;
+            Console.WriteLine("========== Check DeleteFiles ==========");
+
+            Parallel.ForEach(fileNames, parallelOptions, fileName =>
             {
-                return;
-            }
-            Console.WriteLine("========== DeleteFiles ==========");
-            foreach (var fileName in fileNames)
-            {
-                if (keepPatterns == null || keepPatterns.Length ==0)
+                if (keepPatterns == null || keepPatterns.Length == 0)
                 {
-                    Console.WriteLine(fileName);
-                    continue;
+                    deleteFileBag.Add(fileName);
+                    return;
                 }
-                bool isMatch = false;
-                foreach(var pattern in keepPatterns)
+                foreach (var pattern in keepPatterns)
                 {
-                    // パターンにマッチするファイルは無視
-                    if (fileName.Contains(pattern))
+                    // フルパスなので、ファイル名にして無視ファイルなのかパターンマッチ
+                    if (Path.GetFileName(fileName).Contains(pattern))
                     {
-                        isMatch = true;
-                        break;
+                        return;
                     }
                 }
-                if (isMatch)
-                {
-                    continue;
-                }
+                deleteFileBag.Add(fileName);
+            });
+
+            foreach (var fileName in deleteFileBag)
+            {
                 Console.WriteLine(fileName);
             }
             Console.WriteLine("========== End ==========");
@@ -61,37 +63,33 @@
                 Console.WriteLine("targetPath folder is not Exists");
                 return;
             }
-            var fileNames = Directory.EnumerateFiles(targetPath).ToList();
-            if (fileNames.Count == 0)
-            {
-                return;
-            }
+            var fileNames = Directory.EnumerateFiles(targetPath);
+            var parallelOptions = new ParallelOptions();
+            parallelOptions.MaxDegreeOfParallelism = Environment.ProcessorCount;
             Console.WriteLine("========== DeleteFiles ==========");
-            foreach (var fileName in fileNames)
+            Parallel.ForEach(fileNames, parallelOptions, fileName =>
             {
                 if (keepPatterns == null || keepPatterns.Length == 0)
                 {
-                    Console.WriteLine(fileName);
+                    deleteFileBag.Add(fileName);
                     File.Delete(fileName);
-                    continue;
+                    return;
                 }
-
-                bool isMatch = false;
                 foreach (var pattern in keepPatterns)
                 {
-                    // パターンにマッチするファイルは無視
-                    if (fileName.Contains(pattern))
+                    // フルパスなので、ファイル名にして無視ファイルなのかパターンマッチ
+                    if (Path.GetFileName(fileName).Contains(pattern))
                     {
-                        isMatch = true;
-                        break;
+                        return;
                     }
                 }
-                if (isMatch)
-                {
-                    continue;
-                }
-                Console.WriteLine(fileName);
+                deleteFileBag.Add(fileName);
                 File.Delete(fileName);
+            });
+
+            foreach (var fileName in deleteFileBag)
+            {
+                Console.WriteLine(fileName);
             }
             Console.WriteLine("========== End ==========");
         }
