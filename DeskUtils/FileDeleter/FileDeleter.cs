@@ -7,7 +7,7 @@ namespace FileDeleter
     /// </summary>
     internal class FileDeleter
     {
-        private ConcurrentBag<string> deleteFileBag = new ConcurrentBag<string>();
+        private ConcurrentBag<string> deleteFileNameLogBag = new ConcurrentBag<string>();
 
         /// <summary>
         /// 削除対象のファイルを確認
@@ -30,7 +30,7 @@ namespace FileDeleter
             {
                 if (keepPatterns == null || keepPatterns.Length == 0)
                 {
-                    deleteFileBag.Add(fileName);
+                    deleteFileNameLogBag.Add(fileName);
                     return;
                 }
                 foreach (var pattern in keepPatterns)
@@ -41,10 +41,10 @@ namespace FileDeleter
                         return;
                     }
                 }
-                deleteFileBag.Add(fileName);
+                deleteFileNameLogBag.Add(fileName);
             });
 
-            foreach (var fileName in deleteFileBag)
+            foreach (var fileName in deleteFileNameLogBag)
             {
                 Console.WriteLine(fileName);
             }
@@ -71,7 +71,7 @@ namespace FileDeleter
             {
                 if (keepPatterns == null || keepPatterns.Length == 0)
                 {
-                    deleteFileBag.Add(fileName);
+                    deleteFileNameLogBag.Add(fileName);
                     File.Delete(fileName);
                     return;
                 }
@@ -83,11 +83,11 @@ namespace FileDeleter
                         return;
                     }
                 }
-                deleteFileBag.Add(fileName);
+                deleteFileNameLogBag.Add(fileName);
                 File.Delete(fileName);
             });
 
-            foreach (var fileName in deleteFileBag)
+            foreach (var fileName in deleteFileNameLogBag)
             {
                 Console.WriteLine(fileName);
             }
